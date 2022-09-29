@@ -8,6 +8,11 @@ export interface article {
   'title': string;
   'url': string;
 }
+export interface comment {
+  'articleID': string;
+  'commentID': string;
+  'text': string;
+}
 export interface kysely_migration {
   'name': string;
   'timestamp': string;
@@ -19,6 +24,7 @@ export interface kysely_migration_lock {
 
 export interface Database {
   "article": article
+  "comment": comment
   "kysely_migration": kysely_migration
   "kysely_migration_lock": kysely_migration_lock
 }

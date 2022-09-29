@@ -1,8 +1,13 @@
-import { useTypedMutation, useTypedQuery } from "../urql";
+import {useTypedMutation, useTypedQuery} from '../urql'
+
+interface CommentForm {
+  text: string
+  articleID: string
+}
 
 interface ArticleForm {
-  title: string;
-  url: string;
+  title: string
+  url: string
 }
 
 export function List() {
@@ -11,34 +16,47 @@ export function List() {
       articles: {
         id: true,
         title: true,
-        url: true
-      }
-    }
-  });
+        url: true,
+        comments: {
+          text: true,
+        },
+      },
+    },
+  })
+
+  const [, addComment] = useTypedMutation((opts: CommentForm) => ({
+    addComment: [
+      {text: opts.text, articleID: opts.articleID},
+      {
+        id: true,
+        text: true,
+      },
+    ],
+  }))
 
   const [, createArticle] = useTypedMutation((opts: ArticleForm) => ({
     createArticle: [
       opts,
       {
         id: true,
-        url: true
-      }
-    ]
-  }));
+        url: true,
+      },
+    ],
+  }))
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <div style={{padding: '1rem'}}>
       <h2>Articles</h2>
       <h3>Submit</h3>
       <form
         onSubmit={e => {
-          e.preventDefault();
-          const fd = new FormData(e.currentTarget);
+          e.preventDefault()
+          const fd = new FormData(e.currentTarget)
           createArticle({
-            url: fd.get("url")!.toString(),
-            title: fd.get("title")!.toString()
-          });
-          e.currentTarget.reset();
+            url: fd.get('url')!.toString(),
+            title: fd.get('title')!.toString(),
+          })
+          e.currentTarget.reset()
         }}
       >
         <input name="title" placeholder="title" />
@@ -53,10 +71,37 @@ export function List() {
               <div>
                 {article.title} - <a href={article.url}>{article.url}</a>
               </div>
+              <div>
+                {article.title} - <a href={article.url}>{article.url}</a>
+              </div>
+
+              <div>
+                <strong>Comments</strong>
+                <ol>
+                  {article.comments.map(comment => (
+                    <li>{comment.text}</li>
+                  ))}
+                </ol>
+              </div>
+
+              <form
+                onSubmit={async e => {
+                  const fd = new FormData(e.currentTarget)
+                  addComment({
+                    text: fd.get('text')!.toString(),
+                    articleID: article.id,
+                  })
+                  e.currentTarget.reset()
+                  e.preventDefault()
+                }}
+              >
+                <input name="text" placeholder="Comment" />
+                <button type="submit">Submit</button>
+              </form>
             </div>
           </li>
         ))}
       </ol>
     </div>
-  );
+  )
 }

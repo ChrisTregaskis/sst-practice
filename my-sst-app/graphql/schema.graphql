@@ -1,10 +1,17 @@
 type Article {
+  comments: [Comment!]!
   id: ID!
   title: ID!
   url: ID!
 }
 
+type Comment {
+  id: String!
+  text: String!
+}
+
 type Mutation {
+  addComment(articleID: String!, text: String!): Comment!
   createArticle(title: String!, url: String!): Article!
 }
 

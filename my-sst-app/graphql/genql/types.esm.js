@@ -2,10 +2,13 @@ export default {
     "scalars": [
         1,
         3,
-        5
+        6
     ],
     "types": {
         "Article": {
+            "comments": [
+                2
+            ],
             "id": [
                 1
             ],
@@ -20,7 +23,32 @@ export default {
             ]
         },
         "ID": {},
+        "Comment": {
+            "id": [
+                3
+            ],
+            "text": [
+                3
+            ],
+            "__typename": [
+                3
+            ]
+        },
+        "String": {},
         "Mutation": {
+            "addComment": [
+                2,
+                {
+                    "articleID": [
+                        3,
+                        "String!"
+                    ],
+                    "text": [
+                        3,
+                        "String!"
+                    ]
+                }
+            ],
             "createArticle": [
                 0,
                 {
@@ -38,7 +66,6 @@ export default {
                 3
             ]
         },
-        "String": {},
         "Query": {
             "articles": [
                 0

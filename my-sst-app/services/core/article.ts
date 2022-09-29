@@ -17,3 +17,21 @@ export async function list() {
     .orderBy("created", "desc")
     .execute();
 }
+
+export async function addComment(articleID: string, text: string) {
+  return await SQL.DB.insertInto("comment")
+    .values({
+      commentID: ulid(),
+      articleID,
+      text,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+}
+
+export async function comments(articleID: string) {
+  return await SQL.DB.selectFrom("comment")
+    .selectAll()
+    .where("articleID", "=", articleID)
+    .execute();
+}
